@@ -33,7 +33,7 @@ jobs:
           sudo timedatectl set-timezone "$TZ"
           sudo -E apt-get -qq update
           sudo -E apt-get -qq install gcc gcc-aarch64-linux-gnu
-          sudo -E apt-get -qq install bc bison build-essential coccinelle \
+          sudo -E apt-get -qq install bc bison build-essential \
           device-tree-compiler dfu-util efitools flex gdisk graphviz imagemagick \
           liblz4-tool libgnutls28-dev libguestfs-tools libncurses-dev \
           libpython3-dev libsdl2-dev libssl-dev lz4 lzma lzma-alone openssl \
@@ -45,7 +45,7 @@ jobs:
       - name: Checkout self
         uses: actions/checkout@v2
 
-      - name: Checkout Armbian build script
+      - name: Checkout u-boot repository
         uses: actions/checkout@v2
         with:
           path: u-boot
@@ -80,14 +80,14 @@ jobs:
           echo "::set-output name=status::success"
 
       - name: Upload output
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v2
         if: success() || failure()
         with:
           name: Armbian_${{ github.event.inputs.boards }}_${{ github.event.inputs.release }}_${{ env.FILE_DATE }}
           path: ${{ env.UPLOAD_PATH }}
 
       - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@main
+        uses: Mattraks/delete-workflow-runs@v2
         with:
           retain_days: 1
           keep_minimum_runs: 1
