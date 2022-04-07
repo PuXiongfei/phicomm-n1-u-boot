@@ -1,0 +1,93 @@
+# By PuXiongfei
+
+name: Build Armbian
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "v<year>.<month>"
+        required: true
+        default: "master"
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 10240
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-haskell: "true"
+
+      - name: Initialization environment
+        run: |
+          echo "Free space:"
+          df -hT
+          sudo timedatectl set-timezone "$TZ"
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq install gcc gcc-aarch64-linux-gnu
+          sudo -E apt-get -qq install bc bison build-essential coccinelle \
+          device-tree-compiler dfu-util efitools flex gdisk graphviz imagemagick \
+          liblz4-tool libgnutls28-dev libguestfs-tools libncurses-dev \
+          libpython3-dev libsdl2-dev libssl-dev lz4 lzma lzma-alone openssl \
+          pkg-config python3 python3-coverage python3-pkg-resources \
+          python3-pycryptodome python3-pyelftools python3-pytest \
+          python3-sphinxcontrib.apidoc python3-sphinx-rtd-theme python3-virtualenv \
+          swig
+
+      - name: Checkout self
+        uses: actions/checkout@v2
+
+      - name: Checkout Armbian build script
+        uses: actions/checkout@v2
+        with:
+          path: u-boot
+          repository: u-boot/u-boot
+          ref: ${{ github.event.inputs.tags }}
+
+      - name: Apply patch
+        run: |
+          cd u-boot
+          cat $GITHUB_WORKSPACE/patch/patch/phicomm-n1-u-boot.patch
+          git apply $GITHUB_WORKSPACE/patch/patch/phicomm-n1-u-boot.patch
+          git diff
+          echo "FILE_DATE=$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+
+      - name: Build u-boot
+        id: build
+        run: |
+          cd u-boot
+          make phicomm-n1_defconfig
+          CROSS_COMPILE=aarch64-linux-gnu- make -j$(nproc)
+          echo "::set-output name=status::success"
+
+      - name: Organize files
+        id: organize
+        if: success() || failure()
+        run: |
+          mkdir -p ${FILE_DATE}
+          cd ${FILE_DATE}
+          echo "UPLOAD_PATH=${PWD}" >> $GITHUB_ENV
+          ls -l ${GITHUB_WORKSPACE}/u-boot
+          [[ -d ${GITHUB_WORKSPACE}/u-boot/output ]] && sudo mv -f ${GITHUB_WORKSPACE}/u-boot/output ./
+          echo "::set-output name=status::success"
+
+      - name: Upload output
+        uses: actions/upload-artifact@main
+        if: success() || failure()
+        with:
+          name: Armbian_${{ github.event.inputs.boards }}_${{ github.event.inputs.release }}_${{ env.FILE_DATE }}
+          path: ${{ env.UPLOAD_PATH }}
+
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          retain_days: 1
+          keep_minimum_runs: 1
