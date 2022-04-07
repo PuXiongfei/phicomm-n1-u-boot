@@ -1,6 +1,6 @@
 # By PuXiongfei
 
-name: Build Armbian
+name: Build u-boot
 
 on:
   workflow_dispatch:
