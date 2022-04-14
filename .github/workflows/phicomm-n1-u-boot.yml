@@ -54,10 +54,7 @@ jobs:
 
       - name: Apply patch
         run: |
-          ls -l
           cd u-boot
-          ls -l
-          ls -l $GITHUB_WORKSPACE
           cat $GITHUB_WORKSPACE/patch/phicomm-n1-u-boot.patch
           git apply $GITHUB_WORKSPACE/patch/phicomm-n1-u-boot.patch
           git diff
@@ -67,8 +64,9 @@ jobs:
         id: compile
         run: |
           cd u-boot
+          export CROSS_COMPILE=aarch64-linux-gnu-
           make phicomm-n1_defconfig
-          CROSS_COMPILE=aarch64-linux-gnu- make -j$(nproc)
+          make -j$(nproc)
           echo "::set-output name=status::success"
 
       - name: Organize files
