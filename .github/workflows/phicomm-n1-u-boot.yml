@@ -81,7 +81,7 @@ jobs:
           echo "UPLOAD_PATH=${PWD}" >> $GITHUB_ENV
           ls -la ${{ env.UPLOAD_PATH }}
           ls -la ${{ env.GITHUB_WORKSPACE }}
-          ls -la ${{ env.GITHUB_WORKSPACE/u-boot }}
+          ls -la ${{ env.GITHUB_WORKSPACE }}/u-boot
           [[ -f ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ]] && sudo cp -a ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ./
           echo "::set-output name=status::success"
 
