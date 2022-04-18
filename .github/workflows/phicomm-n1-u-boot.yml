@@ -77,18 +77,17 @@ jobs:
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
-          mkdir -p ${FILE_DATE}
-          cd ${FILE_DATE}
+          mkdir -p ${{ github.event.inputs.tags }}
+          cd ${{ github.event.inputs.tags }}
           echo "UPLOAD_PATH=${PWD}" >> $GITHUB_ENV
-          ls -l ${GITHUB_WORKSPACE}/u-boot
-          [[ -d ${GITHUB_WORKSPACE}/u-boot/output ]] && sudo mv -f ${GITHUB_WORKSPACE}/u-boot/output ./
+          [[ -f ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ]] && sudo cp -a ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ./
           echo "::set-output name=status::success"
 
       - name: Upload output
         uses: actions/upload-artifact@v2
         if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
-          name: phicomm-n1-u-boot_${{ env.FILE_DATE }}
+          name: phicomm-n1-u-boot_${{ github.event.inputs.tags }}
           path: ${{ env.UPLOAD_PATH }}
 
       - name: Delete workflow runs
