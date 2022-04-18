@@ -83,15 +83,15 @@ jobs:
           [[ -f ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ]] && sudo cp -a ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ./
           echo "::set-output name=status::success"
 
-      - name: Upload output
-        uses: actions/upload-artifact@v2
-        if: steps.organize.outputs.status == 'success' && !cancelled()
+      - name: Upload u-boot to release
+        uses: softprops/action-gh-release@v1
+        if: ${{ steps.tag.organize.status == 'success' && !cancelled() }}
         with:
-          name: phicomm-n1-u-boot_${{ github.event.inputs.tags }}
-          path: ${{ env.UPLOAD_PATH }}
+          tag_name: ${{ github.event.inputs.tags }}
+          files: ${{ env.UPLOAD_PATH }}/*
 
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2
+      - name: Delete old Releases
+        uses: dev-drprasad/delete-older-releases@v0.2.0
         with:
-          retain_days: 1
-          keep_minimum_runs: 1
+          keep_latest: 1
+          delete_tags: true
