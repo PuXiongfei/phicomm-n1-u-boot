@@ -58,7 +58,6 @@ jobs:
           cat $GITHUB_WORKSPACE/patch/phicomm-n1-u-boot.patch
           git apply $GITHUB_WORKSPACE/patch/phicomm-n1-u-boot.patch
           git diff
-          echo "FILE_DATE=$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
       - name: Show .config
         run: |
@@ -80,6 +79,9 @@ jobs:
           mkdir -p ${{ github.event.inputs.tags }}
           cd ${{ github.event.inputs.tags }}
           echo "UPLOAD_PATH=${PWD}" >> $GITHUB_ENV
+          ls -la ${{ env.UPLOAD_PATH }}
+          ls -la ${{ env.GITHUB_WORKSPACE }}
+          ls -la ${{ env.GITHUB_WORKSPACE/u-boot }}
           [[ -f ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ]] && sudo cp -a ${GITHUB_WORKSPACE}/u-boot/u-boot.bin ./
           echo "::set-output name=status::success"
 
@@ -95,3 +97,5 @@ jobs:
         with:
           keep_latest: 1
           delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
