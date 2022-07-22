@@ -1,8 +1,8 @@
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index df7b4addf9..2a58cdee95 100644
+index 42c7790ee8..28e4c0546f 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -180,6 +180,7 @@ dtb-$(CONFIG_ARCH_MESON) += \
+@@ -183,6 +183,7 @@ dtb-$(CONFIG_ARCH_MESON) += \
  	meson-gxbb-p201.dtb \
  	meson-gxl-s805x-libretech-ac.dtb \
  	meson-gxl-s905d-libretech-pc.dtb \
@@ -243,10 +243,10 @@ index ba7c12b2c1..89de6f9ed2 100644
  F:	configs/libretech-s912-pc_defconfig
 diff --git a/configs/phicomm-n1_defconfig b/configs/phicomm-n1_defconfig
 new file mode 100644
-index 0000000000..fca0fb3044
+index 0000000000..8e9337dcc8
 --- /dev/null
 +++ b/configs/phicomm-n1_defconfig
-@@ -0,0 +1,76 @@
+@@ -0,0 +1,77 @@
 +CONFIG_ARM=y
 +CONFIG_SYS_BOARD="q200"
 +CONFIG_ARCH_MESON=y
@@ -266,6 +266,7 @@ index 0000000000..fca0fb3044
 +CONFIG_USE_PREBOOT=y
 +# CONFIG_DISPLAY_CPUINFO is not set
 +CONFIG_MISC_INIT_R=y
++CONFIG_SYS_MAXARGS=32
 +# CONFIG_CMD_BDI is not set
 +# CONFIG_CMD_IMI is not set
 +CONFIG_CMD_ADC=y
