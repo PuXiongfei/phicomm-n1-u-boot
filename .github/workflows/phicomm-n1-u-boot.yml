@@ -8,7 +8,7 @@ on:
       tags:
         description: "v<year>.<month>"
         required: true
-        default: "master"
+        default: "v2022.07"
 
 env:
   TZ: Asia/Shanghai
