@@ -1,15 +1,15 @@
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index a7e0d9f6c0..f1e9a4d1dc 100644
+index a7e0d9f6c0..6ae4b91e7d 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -183,6 +183,7 @@ dtb-$(CONFIG_ARCH_MESON) += \
+@@ -181,6 +181,7 @@ dtb-$(CONFIG_ARCH_MESON) += \
+ 	meson-gxbb-nanopi-k2.dtb \
+ 	meson-gxbb-p200.dtb \
  	meson-gxbb-p201.dtb \
++	meson-gxl-s905d-phicomm-n1.dtb \
  	meson-gxl-s805x-libretech-ac.dtb \
  	meson-gxl-s905d-libretech-pc.dtb \
-+	meson-gxl-s905d-phicomm-n1.dtb \
  	meson-gxl-s905w-jethome-jethub-j80.dtb \
- 	meson-gxl-s905x-khadas-vim.dtb \
- 	meson-gxl-s905x-libretech-cc.dtb \
 diff --git a/arch/arm/dts/meson-gxl-s905d-p230.dts b/arch/arm/dts/meson-gxl-s905d-p230.dts
 new file mode 100644
 index 0000000000..f025109f25
@@ -141,10 +141,10 @@ index 0000000000..39270ea71c
 +#include "meson-gxl-u-boot.dtsi"
 diff --git a/arch/arm/dts/meson-gxl-s905d-phicomm-n1.dts b/arch/arm/dts/meson-gxl-s905d-phicomm-n1.dts
 new file mode 100644
-index 0000000000..6eefa54604
+index 0000000000..b218a04216
 --- /dev/null
 +++ b/arch/arm/dts/meson-gxl-s905d-phicomm-n1.dts
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,88 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2018 He Yangxuan
@@ -203,6 +203,10 @@ index 0000000000..6eefa54604
 +&sd_emmc_a {
 +	max-frequency = <100000000>;
 +	sd-uhs-sdr50;
++	//max-frequency = <200000000>;
++	//sd-uhs-sdr104;
++	//max-frequency = <50000000>;
++	//sd-uhs-ddr50;
 +};
 +
 +&sd_emmc_b {
