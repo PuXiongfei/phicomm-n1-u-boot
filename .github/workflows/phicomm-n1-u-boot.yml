@@ -33,7 +33,7 @@ jobs:
           sudo timedatectl set-timezone "$TZ"
           sudo -E apt-get -qq update
           sudo -E apt-get -qq install gcc gcc-aarch64-linux-gnu
-          sudo -E apt-get -qq install bc bison build-essential coccinelle \
+          sudo -E apt-get -qq install bc bison build-essential \
           device-tree-compiler dfu-util efitools flex gdisk graphviz imagemagick \
           liblz4-tool libgnutls28-dev libguestfs-tools libncurses-dev \
           libpython3-dev libsdl2-dev libssl-dev lz4 lzma lzma-alone openssl \
