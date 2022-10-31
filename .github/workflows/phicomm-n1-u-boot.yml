@@ -55,9 +55,10 @@ jobs:
 
       - name: Apply patch
         run: |
+          wget -O zzz-phicomm-n1-u-boot.patch https://github.com/PuXiongfei/phicomm-n1-armbian/raw/main/override/userpatches/u-boot/u-boot-meson64/zzz-phicomm-n1-u-boot.patch
+          cat $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch
           cd u-boot
-          cat $GITHUB_WORKSPACE/patch/phicomm-n1-u-boot.patch
-          git apply $GITHUB_WORKSPACE/patch/phicomm-n1-u-boot.patch
+          git apply $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch
           git diff
 
       - name: Show .config
