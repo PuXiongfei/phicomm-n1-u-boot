@@ -43,9 +43,6 @@ jobs:
           python3-sphinx-rtd-theme python3-subunit python3-testtools \
           python3-virtualenv swig uuid-dev
 
-      - name: Checkout self
-        uses: actions/checkout@v2
-
       - name: Checkout u-boot repository
         uses: actions/checkout@v2
         with:
@@ -55,7 +52,7 @@ jobs:
 
       - name: Apply patch
         run: |
-          wget -O zzz-phicomm-n1-u-boot.patch https://github.com/PuXiongfei/phicomm-n1-armbian/raw/main/override/userpatches/u-boot/u-boot-meson64/zzz-phicomm-n1-u-boot.patch
+          wget -O $GITHUB_WORKSPACE/zzz-phicomm-n1-u-boot.patch https://github.com/PuXiongfei/phicomm-n1-armbian/raw/main/override/userpatches/u-boot/u-boot-meson64/zzz-phicomm-n1-u-boot.patch
           cat $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch
           cd u-boot
           git apply $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch
