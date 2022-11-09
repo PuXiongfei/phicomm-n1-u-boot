@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       tags:
-        description: "v<year>.<month>"
+        description: "<year>.<month>"
         required: true
-        default: "v2022.07"
+        default: "2022.10"
 
 env:
   TZ: Asia/Shanghai
@@ -48,11 +48,11 @@ jobs:
         with:
           path: u-boot
           repository: u-boot/u-boot
-          ref: ${{ github.event.inputs.tags }}
+          ref: "v${{ github.event.inputs.tags }}"
 
       - name: Apply patch
         run: |
-          wget -O $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch https://github.com/PuXiongfei/phicomm-n1-armbian/raw/main/override/userpatches/u-boot/u-boot-meson64/zzz-phicomm-n1-u-boot.patch
+          wget -O $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch https://github.com/PuXiongfei/phicomm-n1-armbian/raw/main/override/userpatches/u-boot/u-boot-meson64/meson-gxl-s905d-phicomm-n1-u-boot-${{ github.event.inputs.tags }}.patch
           cat $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch
           cd u-boot
           git apply $GITHUB_WORKSPACE/phicomm-n1-u-boot.patch
